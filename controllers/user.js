@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 function isstringvalid(string){
     if(string == undefined || string.length === 0){
@@ -53,3 +54,48 @@ exports.signUp = async (req, res) => {
     }
 
 }
+
+const  generateAccessToken = (id, name) =>{
+    return jwt.sign({ userId: id, name: name}, 'secrets');
+}
+
+exports.login = async (req, res) => {
+
+    try {
+
+        console.log(req.body);
+    const {email, password} = req.body;
+
+    if(isstringvalid(email) || isstringvalid(password)){
+        return res.status(400).json({err:"Bad parameters, form is not completely filled"});
+
+    }
+
+    const data = await User.findAll({where: {email:email}});
+    if(data.length > 0){
+
+        bcrypt.compare(password, data[0].password, (err, response)=> {
+            if(err){
+                console.log(err);
+            }
+            if(response == true){
+                return res.status(200).json({success: true, message: "user found successfully", token:generateAccessToken(data[0].id, data[0].name) });
+            }
+            else{
+                return res.status(401).json({success: false, message: "password is incorrect"});    // if the password is incorrect then sends the json response that password is incorrect
+
+            }
+        })
+
+    }
+    else{
+        return res.status(404).json({success: false, message: "User not found"});   // if the user not found then it sends the response that the user not found
+    }
+
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+exports.generateAccessToken = generateAccessToken;

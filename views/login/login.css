@@ -9,7 +9,7 @@ body{
     border: 3px solid black;
     /* display: flex; */
     text-align: center;
-    margin-top: 200px;
+    margin-top: 100px;
     height: 350px;
     width: 600px;
     margin-left: 250px;
@@ -68,7 +68,9 @@ body{
 
 .expense-heading {
 
-    color: black;
-    margin-left: 680px;
+    color: white;
+    margin-left: 365px; 
+    margin-top: 100px;
+
 
 }
