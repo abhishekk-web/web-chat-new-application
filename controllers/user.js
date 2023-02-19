@@ -34,7 +34,7 @@ exports.signUp = async (req, res) => {
     const find = await User.findAll({where: {email:email}});
 
     if(find.length>0){  // here if the user already present then it just sent the response that user already present
-            res.status(404).json({success:false, message: "User already exist"});
+            return res.status(404).json({message: "User already exist"});
         }
         else{   // if user is not present here we'll create the user
             bcrypt.hash(password, saltRounds, async(err, hash)=> {  // firstly we our using brcypt here, where took password first then saltrounds

@@ -19,13 +19,18 @@ async function signup(e) {
         alert(response.data.message);
         // window.location.href = ('../login/login.html'); // if the user found then it goes to the login form
     }
+    else if(response.status === 404){
+        console.log("error");
+    }
     else{
+        console.log(response.data.message);
         throw new Error(response.data.message); // we there is an error it will goes to the catch block
     }
    
 
     }
     catch(err){
+        alert(err);
         document.body.innerHTML += `<div style="color:red;">${err.message}</div>`       // it gets all the error
     }
 
