@@ -1,0 +1,29 @@
+
+body{
+
+    background-image: url("web-chat.jpeg");
+
+}
+
+.expense-heading {
+
+    color: white;    
+    text-align: center;
+    margin-top: 70px;
+
+}
+
+.container {
+
+    text-align: left;
+    color: black;
+    margin-top: 70px;
+    background-color: white;
+    border: 2px solid white;
+    width: 550px;
+
+}
+
+.chat-head2 {
+    background-color: lightgray;
+}

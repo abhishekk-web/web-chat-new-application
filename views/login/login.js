@@ -14,6 +14,7 @@ async function login(e){
     const response = await axios.post("http://localhost:3000/user/login", loginDetails);
     if(response.status === 200){
         alert(response.data.message);
+        window.location.href="../chat/chat.html";
     }
     else{
         throw new Error('Failed to login');
