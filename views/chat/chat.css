@@ -27,3 +27,17 @@ body{
 .chat-head2 {
     background-color: lightgray;
 }
+
+.message-form {
+
+    text-align: center;
+    margin-top: 400px;
+    
+
+}
+
+.message-text {
+
+    width: 200px;
+
+}

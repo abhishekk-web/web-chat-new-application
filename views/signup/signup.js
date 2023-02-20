@@ -1,3 +1,5 @@
+// front end of sign up page
+
 async function signup(e) {
 
     try {
@@ -5,6 +7,7 @@ async function signup(e) {
     e.preventDefault();
     console.log(e.target.name.value);
 
+    // storing all the data that the user fills through the form
     const signUp = {
 
         name: e.target.name.value,
@@ -14,6 +17,8 @@ async function signup(e) {
 
     }
     console.log(signUp);
+
+    // sending the sign up details to the backend
     const response = await axios.post('http://localhost:3000/user/signup', signUp);
     if(response.status === 200){
         alert(response.data.message);
