@@ -27,7 +27,11 @@ async function chat(e){
 
 window.addEventListener("DOMContentLoaded",  () => {
 
-    showChats();
+    setInterval(()=> {
+        
+        showChats();
+
+    }, 1000)
 
 })
 
@@ -36,6 +40,7 @@ async function showChats() {
     try {
 
         const token = localStorage.getItem("token");
+        
         const response = await axios.get("http://localhost:3000/message/getchat", {headers: {"Authorization": token}});
         if(response.status === 200){
             console.log(response);
