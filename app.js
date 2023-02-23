@@ -12,14 +12,26 @@ const app = express();
 // Routes
 const userRoute = require('./routes/user');
 const chatRoute = require('./routes/chat');
+const groupRoute = require('./routes/group');
 
 // Models
 const user = require('./models/user');
 const chat = require('./models/chat');
+const group = require('./models/group');
+const userGroup = require('./models/userGroup');
 
 // Associations
 user.hasMany(chat);
 chat.belongsTo(user);
+
+group.hasMany(chat);
+chat.belongsTo(group);
+
+user.hasMany(userGroup);
+group.hasMany(userGroup);
+
+userGroup.belongsTo(user);
+userGroup.belongsTo(group);
 
 // using the express libraries
 app.use(bodyParser.json({extended: false}));
@@ -34,6 +46,7 @@ app.use(cors(
 // we are using routes here
 app.use("/user", userRoute);
 app.use("/message", chatRoute);
+app.use('/user', groupRoute);
 
 // we are running our server and database here
 sequelize
