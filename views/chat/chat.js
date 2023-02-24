@@ -4,20 +4,18 @@
 
 window.addEventListener("DOMContentLoaded",  () => {
 
-    setInterval(()=> {
-        
+    // setInterval(()=> {
+
         showMessage();
 
-    }, 1000)
+    // }, 1000)
 
 })
 
 async function chat(e){
 
     try {
-
         e.preventDefault();
-
         // we are storing the message that user sends
         const chatDetails = {
             message: e.target.message.value
@@ -39,11 +37,11 @@ async function chat(e){
 async function showMessage() {
 
     try {
-  
+
         const parentNode = document.getElementById("chat-head");
         parentNode.innerHTML = " ";
         const messagesToken = JSON.parse(localStorage.getItem("messageToken"));
-        
+
         // if there's no token in local Storage then firstly we have to create that
         if(!messagesToken){
 
@@ -79,32 +77,39 @@ async function showChats() {
     try {
 
         const token = localStorage.getItem("token");
+
         var messageToken = JSON.parse(localStorage.getItem("messageToken"));
         let newMessage;
 
         // here we are checking that data exist or not in message token
+        if(messageToken.length != 0){
 
             // here we are getting the id of the second last message
-            newMessage = messageToken[messageToken.length - 1].id || -1;
-
-        
-        
-        // here we are sending the second last message's id to the backend through query parameters
-        const response = await axios.get(`http://localhost:3000/message/getchat?id=${newMessage}`, {headers: {"Authorization": token}});
-        const allMsgs = messageToken.concat(response.data.chat);
-
-        // here we are checking the length of the messages is more than 10 or less than equals to 10
-        if(allMsgs.length > 10){
-            const saves = allMsgs.slice(allMsgs.length - 10, allMsgs.length);
-            localStorage.setItem("messageToken", JSON.stringify(saves));
+            newMessage = messageToken[messageToken.length - 1].id;
 
         }
         else{
+            // if its equal to 0 then we just -1 so that we'll get the last message
+            newMessage = -1;
+        }
+
+         // here we are sending the second last message's id to the backend through query parameters
+         const response = await axios.get(`http://localhost:3000/message/getchat?id=${newMessage}`, {headers: {"Authorization": token}});
+         const allMsgs = messageToken.concat(response.data.chat);
+ 
+         // here we are checking the length of the messages is more than 10 or less than equals to 10
+         if(allMsgs.length > 10){
+             const saves = allMsgs.slice(allMsgs.length - 10, allMsgs.length);
+             localStorage.setItem("messageToken", JSON.stringify(saves));
+ 
+         }
+         else{
+
             localStorage.setItem("messageToken", JSON.stringify(allMsgs));
         }
 
         showMessage();
-    
+
     }
     catch(err){
         document.body.innerHTML += `<div style="color:red">${err}</div>`
@@ -119,6 +124,3 @@ function showMessages(name, message)
     parentNode.innerHTML=parentNode.innerHTML+childHTML;
 
 }
-
-
-
