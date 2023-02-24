@@ -4,11 +4,11 @@
 
 window.addEventListener("DOMContentLoaded",  () => {
 
-    // setInterval(()=> {
+    setInterval(()=> {
         
         showMessage();
 
-    // }, 1000)
+    }, 1000)
 
 })
 
@@ -83,16 +83,11 @@ async function showChats() {
         let newMessage;
 
         // here we are checking that data exist or not in message token
-        if(messageToken.length != 0){
 
             // here we are getting the id of the second last message
-            newMessage = messageToken[messageToken.length - 1].id;
+            newMessage = messageToken[messageToken.length - 1].id || -1;
 
-        }
-        else{
-            // if its equal to 0 then we just -1 so that we'll get the last message
-            newMessage = -1;
-        }
+        
         
         // here we are sending the second last message's id to the backend through query parameters
         const response = await axios.get(`http://localhost:3000/message/getchat?id=${newMessage}`, {headers: {"Authorization": token}});
