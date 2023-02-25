@@ -106,4 +106,15 @@ exports.login = async (req, res) => {
     }
 }
 
+exports.getAlluser=async(req,res)=>{
+    try {
+        let users= await User.findAll();
+        res.status(200).json({users});    
+    } catch (err) {
+        console.log(err);
+    }
+
+
+}
+
 exports.generateAccessToken = generateAccessToken;

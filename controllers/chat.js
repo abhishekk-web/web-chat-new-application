@@ -9,10 +9,13 @@ exports.chat = async(req, res) => {
     try {
 
         const {message} = req.body;
-    
+        console.log(message);
+        const groupId = req.body.groupId;
+        console.log("groupId is the "+groupId);
         // firstly we are getting the data which matches with the userId
             const name = req.user.name;
-            const data = await Chat.create({messages: message, userId: req.user.id})        
+            const data = await Chat.create({messages: message, userId: req.user.id, groupId: groupId})       
+            console.log(data); 
             res.status(200).json({success: true, message: "message successfully sent", chat: data, name:name})
 
     
@@ -28,9 +31,16 @@ exports.chat = async(req, res) => {
 exports.getChat = async (req, res) => {
 
     try {
-
+        // console.log("groupId"+groupId);
+       
         // here we are getting the query id
+        // console.log(req.user);
+        // const groupId = req.body;
+        // console.log("the group id is "+groupId);
+
+        console.log(req.header("Authorization"));
         const newMessage = req.query.id || -1;
+        console.log("The new message is "+newMessage);
 
         // here we are using left outer join
         const chats = await Chat.findAll({include: 
@@ -42,6 +52,7 @@ exports.getChat = async (req, res) => {
 
             },
                 where: {
+                    // groupId,
                 id: 
                 {
                     // id should be greater than the id that we feteched from the frontend
@@ -51,6 +62,7 @@ exports.getChat = async (req, res) => {
             }
 
         })
+        console.log("the chats are "+chats);
 
         // then we send the json response to the frontend
         res.status(200).json({success: true, chat: chats});
