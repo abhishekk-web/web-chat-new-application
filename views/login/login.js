@@ -18,7 +18,7 @@ async function login(e){
     if(response.status === 200){
         alert(response.data.message);
         localStorage.setItem("token", response.data.token);
-        window.location.href="../chat/chat.html";
+        window.location.href="../chat-screen/chat-screen.html";
     }
     else{
         throw new Error('Failed to login');

@@ -1,0 +1,84 @@
+
+.container{
+    max-width: 955px;
+    background-color: white;
+    margin:auto;
+    height:70vh;
+    border-radius: 4px;
+}
+.message{
+    background-color:white;
+    width:24%;
+    padding:10px;
+    margin:17px 12px;
+    border:2px solid black;
+    border-radius: 10px;
+    color: black;
+}
+.list-group-item{
+    display:block;
+    padding: 1px;
+    clear:both;
+    background-color:white;
+    width:14%;
+    border:2px solid black;
+    border-radius: 10px;
+    color: black;
+    margin-left: 330px;
+    background-color: aquamarine;
+}
+.right{
+    float:right;
+    clear:both;
+}
+body{
+    height:100vh;
+    background-image: url("web-chat.jpg");
+}
+#send-container{
+   text-align: center; 
+   display: block;
+   margin:auto;
+   max-width: 985px;
+   width:100%
+}
+#messageinp{
+    width:92%;
+    border:2px solid black;
+    border-radius:6px;
+    height:34px;
+}
+.btn{
+    cursor:pointer;
+    border-radius:5px;
+    height:34px;
+    margin-top: 30px;
+    border: 1px solid white;
+}
+h2{
+    text-align: center;
+    color:white;
+}
+ul li{
+    list-style-type: none;
+}
+#msg-header-user-id{
+    border-radius: 24%;
+}
+
+.header-flex {
+
+    display: flex;
+    justify-content: space-around;
+    border: 2px solid white;
+    background-color: rgb(160, 158, 95);
+    border-radius: 5px;
+    height: 100px;
+
+}
+
+#left {
+    background-color:gray;
+    text-align: center;
+    height: 100%;
+}

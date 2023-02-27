@@ -4,72 +4,74 @@ const userController = require('../controllers/user');
 const {Op} = require('sequelize');
 
 // here is the backend of chatting
-exports.chat = async(req, res) => {
+exports.chat=async(req,res)=>{
+    try{
+        console.log(req.body)
+        const chat= req.body.chat;
+        console.log("the new chat is"+ chat);
+        const id=req.body.toUser;
+        if(!chat){
+            return res.status(400).json({message:'please enter the message'})
+        }
+        await Chat.create({messages:chat,toUser:id, userId: req.user.id}).then(()=>{
+            console.log(req.user.name)
+            res.status(200).json({UserName:req.user.name,message:'message sent successfully', messages: chat})
 
-    try {
-
-        const {message} = req.body;
-        console.log(message);
-        const groupId = req.body.groupId;
-        console.log("groupId is the "+groupId);
-        // firstly we are getting the data which matches with the userId
-            const name = req.user.name;
-            const data = await Chat.create({messages: message, userId: req.user.id, groupId: groupId})       
-            console.log(data); 
-            res.status(200).json({success: true, message: "message successfully sent", chat: data, name:name})
-
-    
-    }
-    catch(err){
-        console.log(err);
-    }
-
+        })
+    }catch(err){
+        res.status(500).json({message:'internal server error',success:false})
+    }   
 }
 
 // this is the controller to send all the chats to the frontend
 
 exports.getChat = async (req, res) => {
 
-    try {
-        // console.log("groupId"+groupId);
-       
-        // here we are getting the query id
-        // console.log(req.user);
-        // const groupId = req.body;
-        // console.log("the group id is "+groupId);
-
-        console.log(req.header("Authorization"));
-        const newMessage = req.query.id || -1;
-        console.log("The new message is "+newMessage);
-
-        // here we are using left outer join
-        const chats = await Chat.findAll({include: 
-            // through inner join we are getting the name of the user
-            {
-                model: User,
-                as: 'user',
-                attributes: ['name']
-
-            },
-                where: {
-                    // groupId,
-                id: 
-                {
-                    // id should be greater than the id that we feteched from the frontend
-                    [Op.gt]: newMessage
-                }
-
-            }
-
+    try{
+        const user =await User.findAll({where:{id:{[Op.ne]: +req.user.id}},
+            attributes:['id','name']
         })
-        console.log("the chats are "+chats);
-
-        // then we send the json response to the frontend
-        res.status(200).json({success: true, chat: chats});
-    
-    }
-    catch(err){
-        console.log(err);
+        res.status(200).json({user,success:true})
+    }catch(err){
+        res.status(500).json({message:err,success:false})
     }
 
 }
+
+
+exports.getAllChats=async(req,res)=>{
+    try{
+        console.log("All good");
+    const chatpersonId = +req.params.chatpersonId;
+    console.log("chat id is "+chatpersonId)
+    console.log(req.user.id);
+    if(chatpersonId ==0){
+        return res.status(200).json({message:'successful'})
+    }
+    console.log(chatpersonId)
+    const chatTwoWay=await Chat.findAll({
+        limit:10,
+        order:[["updatedAt","DESC"]],
+        where:{
+            [Op.or]:[
+                {toUser:chatpersonId,userId:+req.user.id},
+                {toUser:+req.user.id,userId:chatpersonId}
+            ]
+        },
+        attributes:['messages'],
+        include:{
+            model:User,
+            where:{
+                [Op.or]:[{id:+req.user.id},{id:chatpersonId}]
+            },
+            attributes:['name']
+        }
+
+    })
+    console.log("chat two way is "+chatTwoWay);
+        res.status(200).json({chats:chatTwoWay.reverse(),success:true})
+}catch(err){
+    console.log(err);
+    res.status(500).json({message:'internal server error',success:false})
+}
+    }
