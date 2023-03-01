@@ -16,21 +16,23 @@ const createGroupRoute = require('./routes/createGroup');
 const groupChatRoute = require('./routes/groupChat');
 
 // Models
-const user = require('./models/user');
-const chat = require('./models/chat');
-const group = require('./models/group');
-const userGroup = require('./models/userGroup');
+const User = require('./models/user');
+const Chat = require('./models/chat');
+const Group = require('./models/group');
+const Groupchat = require('./models/groupChat');
+const Usergroup = require('./models/userGroup');
+
 
 // Associations
-user.hasMany(chat);
-chat.belongsTo(user);
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
-user.hasMany(group);
-group.belongsTo(user);
 
-user.belongsToMany(group,{through: userGroup});
-group.belongsToMany(user, {through: userGroup});
+User.hasMany(Groupchat);
+Groupchat.belongsTo(User)
 
+User.belongsToMany(Group,{through:Usergroup});
+Group.belongsToMany(User,{through:Usergroup});
 // using the express libraries
 app.use(bodyParser.json({extended: false}));
 app.use(cors(

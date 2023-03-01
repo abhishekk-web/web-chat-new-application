@@ -31,7 +31,7 @@ exports.getChat = async (req, res) => {
         const user =await User.findAll({where:{id:{[Op.ne]: +req.user.id}},
             attributes:['id','name']
         })
-        res.status(200).json({user,success:true})
+        res.status(200).json({user,success:true, user:user})
     }catch(err){
         res.status(500).json({message:err,success:false})
     }

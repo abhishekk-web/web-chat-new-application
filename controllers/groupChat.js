@@ -7,10 +7,13 @@ const Groupchat=require('../models/groupChat');
 
 exports.allUserGroups=async(req,res)=>{
     try{
+        console.log("the req.user is "+req.user.id);
     const user =await req.user.getGroups({attributes:['id','name']})
+        console.log(user);
     console.log("the users are "+user)
     res.status(200).json({user,success:true})
 }catch(err){
+    console.log(err);
     res.status(500).json({message:err,success:false})
 }
 }
@@ -23,7 +26,7 @@ exports.groupMessage=async(req,res)=>{
         if(!groupMessage || !groupId){
             return res.status(400).json({message:'bad parameters'})
         }
-        const response=await Groupchat.create({groupMessage:groupMessage,groupId:+groupId,userName, userId: req.user.id});
+        const response=await Groupchat.create({groupMessage:groupMessage,groupId:+groupId,userName:userName, userId: req.user.id});
         console.log(response);
         res.status(200).json({message:'message sent successfully'})
     }

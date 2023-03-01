@@ -56,14 +56,17 @@ async function addUserToGroup(e){
     const adduser={
         groupName:e.target.grpname.value,
         email:e.target.email.value, 
+        isAdmin:adminTrue.checked === true ? true :false
     }
     const token=localStorage.getItem('token')
     const response=await axios.post('http://localhost:3000/group/adduser',adduser,{headers:{"Authorization":token}})
-    console.log(response)
+    console.log(response);
+    alert(response.data.message);
 }catch(err){
     console.log(err)
 }
 }
+//
 async function removeUser(e){
     try{
     e.preventDefault()
@@ -75,6 +78,7 @@ async function removeUser(e){
     const token=localStorage.getItem('token')
     const response = await axios.post('http://localhost:3000/group/deleteuser',removeanyuser,{headers:{"Authorization":token}})
     console.log(response)
+    alert("successfully deleted user");
 }catch(err){
     console.log(err)
 }
@@ -83,7 +87,7 @@ async function allShowgroup(){
     try{
     createdGroupShow.innerHTML="";
     const token=localStorage.getItem('token')
-    const response=await axios.get('http://localhost:3000/group/allgroups',{headers:{"Authorization":token}})
+    const response=await axios.get('http://localhost:3000/group/allgroups',{headers:{"Authorization":token}})//
     console.log(response)
     const group1=response.data.group
     console.log(group1)
@@ -97,9 +101,32 @@ async function allShowgroup(){
     }
 }
 }
+
+// function userClick(e){
+//     if(e.target.className == "list-group-item"){
+
+//         const name = e.target.textContent;
+//         console.log(name);
+//         const id = +e.target.children[0].value;
+//         console.log("the id is "+id);
+//         groupId=id;
+//         showgroups();
+//     }
+// }
+
+// function showgroups(){
+
+//     console.log("hello world");
+
+
+// }
+
 function showScreen(){
     getContacts()
     allShowgroup()
     }
 
+
+
 window.addEventListener('DOMContentLoaded',showScreen)
+// createdGroupShow.addEventListener('click', userClick);
